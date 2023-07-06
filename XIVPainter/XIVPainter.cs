@@ -1,4 +1,4 @@
-﻿using Clipper2Lib;
+using Clipper2Lib;
 using Dalamud.Game;
 using Dalamud.Logging;
 using Dalamud.Plugin;
@@ -359,6 +359,26 @@ public class XIVPainter
     public void RemoveDrawings(params IDrawing[] drawings)
     {
         foreach (var drawing in drawings)
+        {
+            if (drawing is IDrawing3D draw)
+            {
+                if (draw.DeadTime == DateTime.MinValue)
+                {
+                    draw.DeadTime = DateTime.Now;
+                }
+            }
+            else
+            {
+                _drawingElements.Remove(drawing);
+            }
+        }
+    }
+    /// <summary>
+    /// Remove all the drawings from the list.
+    /// </summary>
+    public void RemoveAll()
+    {
+        foreach (var drawing in _drawingElements)
         {
             if (drawing is IDrawing3D draw)
             {
